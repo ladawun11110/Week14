@@ -18,7 +18,7 @@
                 <span class="text-slate-800 font-semibold">แก้ไขบทความ</span>
             </div>
             <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                รหัสบทความ #{{ $blogs->id }}
+                รหัสบทความ{{ $blogs->id }}
             </span>
         </div>
 

@@ -3,10 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
 
-Route::get('/', [AdminController::class, 'index'])->name('index');
-Route::get('/index', [AdminController::class, 'showIndex'])->name('index-page');
-Route::get('/blog2', [AdminController::class, 'blog2'])->name('blog2');
+
+//นักอ่าน
+Route::get('/', [BlogController::class, 'index'])->name('index');
+Route::get('detail/{id}',[BlogController::class,'detail'])->name('detail');
+
+
+// Route::get('/', [AdminController::class, 'index'])->name('index');
+Route::get('/blog2', [AdminController::class, 'blog2'])->name('blog2')->middleware('auth');
 
 // เอา .name('author.') ออก เพื่อให้เรียก route('insert') ได้ตามปกติ
 Route::prefix('author')->group(function () {

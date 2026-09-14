@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Blog;
+
 class HomeController extends Controller
 {
     /**
@@ -23,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $blogs = \Illuminate\Support\Facades\DB::table("blogs")->paginate(5);
+        $blogs = Blog::orderByDesc('id')->where('status', 1)->get();
         return view('home', compact('blogs'));
     }
 }

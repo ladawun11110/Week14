@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Blog Application')</title>
+    <title>@yield('title') | Ladawan </title>
 
     <!-- Google Fonts & Tailwind CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +57,7 @@
                 <div class="flex items-center justify-between h-16">
                     <!-- Brand Logo -->
                     <div class="flex items-center gap-8">
-                        <a class="flex items-center gap-2.5 group" href="{{ url('/home') }}">
+                        <a class="flex items-center gap-2.5 group" href="{{ url('/') }}">
                             <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/25 group-hover:scale-105 transition-transform">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
@@ -68,25 +68,29 @@
                             </span>
                         </a>
 
-                        @auth
                         <!-- Desktop Navigation Links -->
                         <div class="hidden md:flex items-center gap-1">
-                            <a href="{{ route('home') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->routeIs('home') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
+                            <a href="{{ url('/') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->is('/') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
                                 หน้าแรก
                             </a>
-                            <a href="{{ route('blog') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->routeIs('blog') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
+                            <a href="{{ Auth::check() ? route('blog') : route('login') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->routeIs('blog') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
                                 คลังบทความ
                             </a>
-                            <a href="{{ route('blog2') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->routeIs('blog2') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
+                            <a href="{{ Auth::check() ? route('blog2') : route('login') }}" class="px-3.5 py-2 text-sm font-semibold rounded-lg transition-colors {{ request()->routeIs('blog2') ? 'text-indigo-600 bg-indigo-50/70' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/60' }}">
                                 จัดการระบบ
                             </a>
                         </div>
-                        @endauth
                     </div>
 
                     <!-- Right Navigation Side -->
                     <div class="flex items-center gap-3">
                         @guest
+                            <a href="{{ route('blog2') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 3m0-3a2 2 0 110 3m-3.793-3a3 3 0 01-2.17-1.025M15.793 3a3 3 0 012.17-1.025M3 18v-2a4 4 0 014-4h10a4 4 0 014 4v2m-3-10a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                <span>เข้าสู่ระบบหลังบ้าน</span>
+                            </a>
                             @if (Route::has('login'))
                                 <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition">
                                     {{ __('เข้าสู่ระบบ') }}
@@ -94,18 +98,17 @@
                             @endif
 
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm hover:shadow-indigo-500/25 transition">
+                                <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-slate-700 hover:text-indigo-600 transition">
                                     {{ __('สมัครสมาชิก') }}
                                 </a>
                             @endif
                         @else
-                            <!-- Action Button: Write Article -->
-                            <a href="{{ route('create') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all">
+                            {{-- <a href="{{ route('blog2') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm shadow-indigo-500/20 hover:shadow-indigo-500/35 transition-all">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 3m0-3a2 2 0 110 3m-3.793-3a3 3 0 01-2.17-1.025M15.793 3a3 3 0 012.17-1.025M3 18v-2a4 4 0 014-4h10a4 4 0 014 4v2m-3-10a4 4 0 11-8 0 4 4 0 018 0z"></path>
                                 </svg>
-                                <span>เขียนบทความ</span>
-                            </a>
+                                <span>ระบบหลังบ้าน</span>
+                            </a> --}}
 
                             <!-- User Profile Dropdown -->
                             <div class="relative dropdown">
@@ -170,6 +173,29 @@
             </div>
         </footer>
     </div>
+    <!-- resources/views/layouts/app.blade.php -->
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- Summernote Lite CSS & JS CDN -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#content').summernote({
+            placeholder: 'เขียนเนื้อหาบทความที่นี่...',
+            tabsize: 2,
+            height: 250,
+             callbacks: {
+                onPaste: function (e) {
+                    var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                    e.preventDefault();
+                    document.execCommand('insertText', false, bufferText);
+                }
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

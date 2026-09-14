@@ -1,4 +1,4 @@
-<div class="max-w-4xl mx-auto py-8 px-4">
+{{-- <div class="max-w-4xl mx-auto py-8 px-4">
     <!-- Hero Greeting Card -->
     <div class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-8 sm:p-10 text-white shadow-2xl shadow-indigo-500/20 mb-8">
         <!-- Background decorative glow -->
@@ -76,4 +76,25 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
+
+@extends('layouts.app')
+@section('content')
+    <div class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <h2>บทความล่าสุด</h2>
+            <br>
+            <hr>
+            <br>
+            @foreach ($blogs as $item)
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+                    <p>{{ $item->title }}</p>
+                     <p>{{ Str::limit(strip_tags($item->content), 30) }}</p>
+                    <a href="/detail/{{$item->id}}" class="text-indigo-600 hover:text-indigo-800">อ่านเพิ่มเติม</a>
+                </div>
+            @endforeach
+
+        </div>
+    </div>
+@endsection
